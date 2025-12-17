@@ -14,6 +14,15 @@ use App\Http\Controllers\Admin\TableController;
 */
 // Halaman Utama
 Route::get('/', [HomeController::class, 'index'])->name('home');
+
+// About & Gallery Pages
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
+Route::get('/gallery', function () {
+    return view('gallery');
+})->name('gallery');
 // Form Reservasi
 Route::get('/reserve', [ReservationController::class, 'create'])->name('reservation.create');
 Route::post('/reservation/check', [ReservationController::class, 'checkAvailability'])->name('reservation.check');
