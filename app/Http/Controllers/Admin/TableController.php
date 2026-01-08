@@ -34,13 +34,27 @@ class TableController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'tableNumber' => 'required|integer|unique:table_lists,tableNumber',
             'capacity' => 'required|integer|min:1',
             'status' => 'required|in:available,reserved,unavailable',
         ]);
 
         try {
-            TableList::create($request->all());
+            // Cari nomor meja terkecil yang tersedia
+            $existingNumbers = TableList::pluck('tableNumber')->sort()->toArray();
+            $tableNumber = 1;
+            foreach ($existingNumbers as $num) {
+                if ($tableNumber == $num) {
+                    $tableNumber++;
+                } else {
+                    break;
+                }
+            }
+
+            TableList::create([
+                'tableNumber' => $tableNumber,
+                'capacity' => $request->capacity,
+                'status' => $request->status,
+            ]);
 
             return redirect()->route('admin.tables.index')
                              ->with('success', 'Meja baru berhasil ditambahkan.');

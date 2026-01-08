@@ -57,16 +57,6 @@
                         @csrf
                         <div class="space-y-6">
                             
-                            <!-- Table Number -->
-                            <div>
-                                <label for="tableNumber" class="block text-sm font-medium text-gray-700">Table Number</label>
-                                <input type="number" id="tableNumber" name="tableNumber" value="{{ old('tableNumber') }}" required 
-                                       class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-3 focus:ring-primary-red focus:border-primary-red">
-                                @error('tableNumber')
-                                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                                @enderror
-                            </div>
-
                             <!-- Capacity -->
                             <div>
                                 <label for="capacity" class="block text-sm font-medium text-gray-700">Capacity (Number of Guests)</label>

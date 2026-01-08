@@ -66,7 +66,7 @@ class RestaurantTest extends TestCase
     {
         $response = $this->get('/');
         $response->assertStatus(200);
-        $response->assertSee('Welcome to our family restaurant');
+        $response->assertSee('The Family Table');
     }
 
     #[Test] // P-2: Reservasi Sukses
@@ -200,7 +200,6 @@ class RestaurantTest extends TestCase
         $this->actingAs(User::where('role', 'admin')->first());
 
         $newTableData = [
-            'tableNumber' => 15,
             'capacity' => 8,
             'status' => 'available',
         ];
@@ -208,7 +207,13 @@ class RestaurantTest extends TestCase
         $response = $this->post(route('admin.tables.store'), $newTableData);
 
         $response->assertSessionHas('success');
-        $this->assertDatabaseHas('table_lists', $newTableData);
+        $this->assertDatabaseHas('table_lists', [
+            'capacity' => 8,
+            'status' => 'available',
+        ]);
+        // Pastikan tableNumber adalah integer (auto assigned)
+        $createdTable = TableList::where('capacity', 8)->where('status', 'available')->first();
+        $this->assertIsInt($createdTable->tableNumber);
     }
 
     #[Test] // A-4: CRUD: Update Meja
